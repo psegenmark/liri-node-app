@@ -1,8 +1,39 @@
+var userFunction = process.argv[2];
+var userInput1 = process.argv.slice(3);
+var userInput = userInput1.join(" ");
 
-// calling on twitter
-// add the prompt - Who's your POTUS!
+switch (userFunction) {
+  case "my-tweets":
+    twitter();
+    break;
+
+  case "spotify-this-song":
+    spotify(userInput);
+    break;
+
+  case "movie-this":
+    omdb(userInput);
+    break;
+
+  case "do-what-it-says":
+    doWhatISay();
+    break;
+}
 
 function twitter(){
+
+  var inquirer = require("inquirer");
+  
+  inquirer
+  .prompt([
+    // Here we create a basic text prompt.
+    {
+      type: "input",
+      message: "Who's your POTUS?",
+      name: "username"
+    }
+  ])
+
 var twitterKeys = require("./keys.js");
 
 var Twitter = require('twitter');
@@ -33,9 +64,9 @@ client.get('statuses/user_timeline', params, function(error, tweets, response) {
 
 function spotify(value){
 
-  if (value == null){
-    value = 'All the Small Things';
-  }
+if (value === null){
+    value = 'The Sign';
+}
 
 var spotifyKeys = require("./keys.js");
 var Spotify = require('node-spotify-api');
@@ -115,9 +146,9 @@ fs.readFile("random.txt", "utf8", function(error, data) {
 
   // We will then print the contents of data
   console.log(data);
+  var dataArr = data.split(",");
   
+  spotify(dataArr[1]);
+
 });
 }
-
-spotify("I want it that way");
-omdb("dark knight returns");
