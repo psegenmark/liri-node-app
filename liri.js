@@ -22,28 +22,11 @@ switch (userFunction) {
 
 function twitter(){
 
-  var inquirer = require("inquirer");
-  
-  inquirer
-  .prompt([
-    // Here we create a basic text prompt.
-    {
-      type: "input",
-      message: "Who's your POTUS?",
-      name: "username"
-    }
-  ])
-
-var twitterKeys = require("./keys.js");
+var keyImport = require("./keys.js");
 
 var Twitter = require('twitter');
 
-var client = new Twitter({
-    consumer_key: 'N8Y3I958JIqgsIRDBSKZe2Rtc',
-    consumer_secret: 'HKssDCO78I4tvGpaJ5tIyZKBqhJUzWMefLRkP1fIBZiiEVCt36',
-    access_token_key: '931324642496622592-Kayi5UE9L206bC0Uzj3FzBu1VJcngYx',
-    access_token_secret: 'BqUOeOCwm5YCVA5z3qssJo1KkszOT4DjsgmkUw5LTGSVf',
-});
+var client = new Twitter(keyImport.twitterKeys);
 
 
 var params = {screen_name: 'realDonaldTrump',
@@ -55,26 +38,38 @@ client.get('statuses/user_timeline', params, function(error, tweets, response) {
     // console.log each result.
     console.log(tweets[i].created_at);
     console.log(tweets[i].text);
+
+   
     
   }
 });
+var inquirer = require("inquirer");
+
+inquirer
+.prompt([
+  // Here we create a basic text prompt.
+  {
+    message: "Who's your POTUS?",
+    name: "username"
+  }
+])
 };
 
 // calling on spotify
 
 function spotify(value){
 
-if (value === null){
+if (value === ""){
     value = 'The Sign';
 }
 
-var spotifyKeys = require("./keys.js");
+var keyImport = require("./keys.js");
 var Spotify = require('node-spotify-api');
 
-var spotify = new Spotify({
-  id: "ade4c2468b124149b85c0ee03310fd2c",
-  secret: "9be9e3876e164620ab53f4f9159ecd95"
-});
+// console.log(keyImport.spotifyKeys);
+
+
+var spotify = new Spotify(keyImport.spotifyKeys);
 
 spotify.search({ type: 'track', query: value, limit:'1' }, function(err, data) {
  if (err) {
@@ -96,7 +91,7 @@ console.log(JSON.stringify(data.tracks.items[0].album.name, null, 2));
 
 function omdb(value){
 
-  if (value == null){
+  if (value == ""){
     value = 'jaws';
   }  
 
